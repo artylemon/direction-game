@@ -42,9 +42,9 @@ export const Game = () => {
   const inputType = mode === 'WORD' ? 'ARROWS' : 'TEXT';
 
   return (
-    <div className="p-4 flex flex-col items-center max-w-md mx-auto min-h-screen">
-      <div className="w-full flex justify-between items-center mb-8">
-        <h1 className="text-xl font-bold text-gray-700">{mode} MODE</h1>
+    <div className="p-4 flex flex-col items-center max-w-lg mx-auto">
+      <div className="w-full flex justify-center items-center mb-8">
+        <h1 className="text-xl font-bold text-gray-200 dark:text-gray-500">{mode} MODE</h1>
       </div>
 
       {gameState === 'IDLE' && (
@@ -75,8 +75,6 @@ export const Game = () => {
                     ))}
                 </div>
                 
-                <p className="text-gray-500 text-lg mb-8">Ready to start?</p>
-                
                 {mode !== 'WORD' && (
                   <div className="mb-8 flex items-center justify-center gap-2">
                     <input 
@@ -86,11 +84,13 @@ export const Game = () => {
                       onChange={(e) => setRandomizeButtons(e.target.checked)}
                       className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
                     />
-                    <label htmlFor="randomize" className="text-gray-700 font-medium">
+                    <label htmlFor="randomize" className="font-medium">
                       Randomize Button Order
                     </label>
                   </div>
                 )}
+                
+                <p className="text-gray-500 text-lg mb-8">Ready to start?</p>
 
                 <button
                     onClick={handleStart}
@@ -106,7 +106,7 @@ export const Game = () => {
         <>
           <ScoreBoard score={score} timeLeft={timeLeft} />
           
-          <div className="flex-1 flex flex-col items-center justify-center">
+          <div className="flex-1 flex flex-col items-center justify-center w-full">
             <div className="mb-12 flex items-center justify-center h-48 w-full">
                 <GameVisuals 
                   mode={mode} 
@@ -130,7 +130,10 @@ export const Game = () => {
 
       {gameState === 'GAME_OVER' && null}
 
-      <Link to="/" className="text-gray-400 hover:text-gray-600 mt-auto py-4 text-sm font-medium">
+      <Link 
+        to="/" 
+        className="mt-auto mb-4 px-6 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-200 transition-colors font-medium text-sm"
+      >
         Back to Menu
       </Link>
     </div>
