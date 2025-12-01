@@ -6,9 +6,8 @@ import { ScoreBoard } from '../components/ScoreBoard';
 import { GameVisuals } from '../components/GameVisuals';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { shuffleArray, DIRECTIONS } from '../utils/gameUtils';
+import { GAME_CONFIG } from '../constants';
 import type { GameMode, Direction } from '../types';
-
-const TIME_OPTIONS = [15, 30, 60];
 
 export const Game = () => {
   const location = useLocation();
@@ -60,7 +59,7 @@ export const Game = () => {
 
                 <p className="text-gray-500 text-lg mb-4">Select Time</p>
                 <div className="flex justify-center gap-2 mb-8">
-                    {TIME_OPTIONS.map(t => (
+                    {GAME_CONFIG.TIME_OPTIONS.map(t => (
                         <button
                             key={t}
                             onClick={() => setSelectedTime(t)}

@@ -1,7 +1,6 @@
 import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
 import clsx from 'clsx';
 import type { Direction } from '../types';
-import styles from './Controls.module.css';
 import { useSettings } from '../context/SettingsContext';
 import { getDirectionLabel } from '../utils/gameUtils';
 
@@ -30,20 +29,18 @@ export const Controls = ({
     }
   };
 
-  // Common button class
+  const baseButtonClass = "flex items-center justify-center rounded-lg border-none cursor-pointer transition-all duration-100 shadow-md active:scale-95 active:shadow-inner disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-70";
+  
   const getButtonClass = (extraClass?: string) => clsx(
-    styles.button,
+    baseButtonClass,
     extraClass,
-    { 
-      [styles.buttonError]: isWrong,
-      [styles.buttonSuccess]: isCorrect,
-      [styles.buttonText]: inputType === 'TEXT'
-    }
+    isWrong ? "bg-red-500 animate-shake" : isCorrect ? "bg-green-500 animate-pop" : "bg-blue-500 text-white",
+    inputType === 'TEXT' ? "aspect-[2/1] font-extrabold text-xl tracking-wider" : "aspect-square"
   );
 
   if (inputType === 'TEXT') {
     return (
-      <div className={styles.containerText}>
+      <div className="grid grid-cols-2 gap-4 max-w-[500px] mx-auto my-8 w-full">
         {buttonOrder.map((dir) => (
           <button
             key={dir}
@@ -59,41 +56,41 @@ export const Controls = ({
   }
 
   return (
-    <div className={styles.container}>
+    <div className="grid grid-cols-3 grid-rows-3 gap-4 max-w-[360px] w-full mx-auto my-8">
       <button
-        className={getButtonClass(styles.up)}
+        className={getButtonClass("col-start-2 row-start-1")}
         onClick={() => handleInteraction('UP')}
         disabled={disabled}
         aria-label="Up"
       >
-        <ArrowUp size={32} />
+        <ArrowUp size={48} />
       </button>
       
       <button
-        className={getButtonClass(styles.left)}
+        className={getButtonClass("col-start-1 row-start-2")}
         onClick={() => handleInteraction('LEFT')}
         disabled={disabled}
         aria-label="Left"
       >
-        <ArrowLeft size={32} />
+        <ArrowLeft size={48} />
       </button>
       
       <button
-        className={getButtonClass(styles.right)}
+        className={getButtonClass("col-start-3 row-start-2")}
         onClick={() => handleInteraction('RIGHT')}
         disabled={disabled}
         aria-label="Right"
       >
-        <ArrowRight size={32} />
+        <ArrowRight size={48} />
       </button>
       
       <button
-        className={getButtonClass(styles.down)}
+        className={getButtonClass("col-start-2 row-start-3")}
         onClick={() => handleInteraction('DOWN')}
         disabled={disabled}
         aria-label="Down"
       >
-        <ArrowDown size={32} />
+        <ArrowDown size={48} />
       </button>
     </div>
   );

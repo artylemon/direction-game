@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Direction, GameMode } from '../types';
 import { getRandomDirection } from '../utils/gameUtils';
-
-const BASE_POINTS = 10;
-const PENALTY_TIME = 1; // Seconds to stun the player
+import { GAME_CONFIG } from '../constants';
 
 export const useGameLogic = (_mode: GameMode) => {
   const [score, setScore] = useState(0);
@@ -43,7 +41,7 @@ export const useGameLogic = (_mode: GameMode) => {
             }
             return prev - 1;
         });
-      }, 1000);
+      }, GAME_CONFIG.TIMER_INTERVAL_MS);
     }
     return () => clearInterval(interval);
   }, [gameState, timeLeft]);
@@ -80,7 +78,7 @@ export const useGameLogic = (_mode: GameMode) => {
       else if (timeTaken < 2.0) speedBonus = 3;
       else if (timeTaken < 3.0) speedBonus = 1;
 
-      setScore((prev) => prev + BASE_POINTS + speedBonus);
+      setScore((prev) => prev + GAME_CONFIG.BASE_POINTS + speedBonus);
       
       // Trigger success animation
       if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
@@ -88,7 +86,7 @@ export const useGameLogic = (_mode: GameMode) => {
       successTimeoutRef.current = setTimeout(() => {
         setIsCorrect(false);
         successTimeoutRef.current = null;
-      }, 150);
+      }, GAME_CONFIG.SUCCESS_ANIMATION_DURATION_MS);
       
       generateNewQuestion();
     } else {
@@ -96,7 +94,7 @@ export const useGameLogic = (_mode: GameMode) => {
       setIsWrong(true);
       setTimeout(() => {
         setIsWrong(false);
-      }, PENALTY_TIME * 1000);
+      }, GAME_CONFIG.PENALTY_TIME_SECONDS * 1000);
     }
   }, [gameState, targetDirection, generateNewQuestion, isWrong]);
 
