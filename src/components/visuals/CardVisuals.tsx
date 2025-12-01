@@ -1,6 +1,6 @@
 import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
 import clsx from 'clsx';
-import type { Direction, GameMode } from '../../types';
+import { Direction, GameMode } from '../../types';
 import { useSettings } from '../../context/SettingsContext';
 import { getDirectionLabel } from '../../utils/gameUtils';
 import { THEME } from '../../constants';
@@ -18,14 +18,14 @@ export const CardVisuals = ({ mode, targetDirection, isWrong, isCorrect }: CardV
   const iconSize = THEME.ICON_SIZE;
   const getIcon = () => {
     switch (targetDirection) {
-      case 'UP': return <ArrowUp size={iconSize} />;
-      case 'DOWN': return <ArrowDown size={iconSize} />;
-      case 'LEFT': return <ArrowLeft size={iconSize} />;
-      case 'RIGHT': return <ArrowRight size={iconSize} />;
+      case Direction.UP: return <ArrowUp size={iconSize} />;
+      case Direction.DOWN: return <ArrowDown size={iconSize} />;
+      case Direction.LEFT: return <ArrowLeft size={iconSize} />;
+      case Direction.RIGHT: return <ArrowRight size={iconSize} />;
     }
   };
 
-  const content = mode === 'WORD' 
+  const content = mode === GameMode.WORD 
     ? <span className="text-4xl font-black uppercase tracking-wider">{getDirectionLabel(targetDirection, useCardinalDirections)}</span>
     : getIcon();
 

@@ -1,4 +1,4 @@
-import type { Direction, GameMode } from '../types';
+import { Direction, GameMode } from '../types';
 import { HighlightVisuals } from './visuals/HighlightVisuals';
 import { CardVisuals } from './visuals/CardVisuals';
 
@@ -10,7 +10,7 @@ interface GameVisualsProps {
 }
 
 export const GameVisuals = ({ mode, targetDirection, isWrong, isCorrect }: GameVisualsProps) => {
-  if (mode === 'HIGHLIGHT') {
+  if (mode === GameMode.HIGHLIGHT) {
     return <HighlightVisuals targetDirection={targetDirection} />;
   }
 

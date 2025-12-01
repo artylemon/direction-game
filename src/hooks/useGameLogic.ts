@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { Direction, GameMode } from '../types';
+import { Direction, type GameMode, GameState } from '../types';
 import { getRandomDirection } from '../utils/gameUtils';
 import { GAME_CONFIG } from '../constants';
 
@@ -7,8 +7,8 @@ export const useGameLogic = (_mode: GameMode) => {
   const [score, setScore] = useState(0);
   const [lastScore, setLastScore] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(0);
-  const [targetDirection, setTargetDirection] = useState<Direction>('UP');
-  const [gameState, setGameState] = useState<'IDLE' | 'PLAYING' | 'GAME_OVER'>('IDLE');
+  const [targetDirection, setTargetDirection] = useState<Direction>(Direction.UP);
+  const [gameState, setGameState] = useState<GameState>(GameState.IDLE);
   const [isWrong, setIsWrong] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   
@@ -31,12 +31,12 @@ export const useGameLogic = (_mode: GameMode) => {
   // Timer
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
-    if (gameState === 'PLAYING' && timeLeft > 0) {
+    if (gameState === GameState.PLAYING && timeLeft > 0) {
       interval = setInterval(() => {
         setTimeLeft((prev) => {
             if (prev <= 1) {
                 setLastScore(scoreRef.current);
-                setGameState('IDLE');
+                setGameState(GameState.IDLE);
                 return 0;
             }
             return prev - 1;
@@ -54,20 +54,20 @@ export const useGameLogic = (_mode: GameMode) => {
   const startGame = useCallback((duration: number) => {
     setScore(0);
     setTimeLeft(duration);
-    setGameState('PLAYING');
+    setGameState(GameState.PLAYING);
     setIsWrong(false);
     setIsCorrect(false);
     generateNewQuestion();
   }, [generateNewQuestion]);
 
   const resetGame = useCallback(() => {
-    setGameState('IDLE');
+    setGameState(GameState.IDLE);
     setScore(0);
     setTimeLeft(0);
   }, []);
 
   const handleAnswer = useCallback((selectedDirection: Direction) => {
-    if (gameState !== 'PLAYING' || isWrong) return;
+    if (gameState !== GameState.PLAYING || isWrong) return;
 
     if (selectedDirection === targetDirection) {
       // Correct

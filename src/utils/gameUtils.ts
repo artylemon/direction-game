@@ -1,6 +1,6 @@
-import type { Direction } from '../types';
+import { Direction } from '../types';
 
-export const DIRECTIONS: Direction[] = ['UP', 'DOWN', 'LEFT', 'RIGHT'];
+export const DIRECTIONS: Direction[] = [Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT];
 
 export const getRandomDirection = (): Direction => {
   const randomIndex = Math.floor(Math.random() * DIRECTIONS.length);
@@ -20,9 +20,9 @@ export const getDirectionLabel = (direction: Direction, useCardinal: boolean): s
   if (!useCardinal) return direction;
   
   switch (direction) {
-    case 'UP': return 'NORTH';
-    case 'DOWN': return 'SOUTH';
-    case 'LEFT': return 'WEST';
-    case 'RIGHT': return 'EAST';
+    case Direction.UP: return 'NORTH';
+    case Direction.DOWN: return 'SOUTH';
+    case Direction.LEFT: return 'WEST';
+    case Direction.RIGHT: return 'EAST';
   }
 };

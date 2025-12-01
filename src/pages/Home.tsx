@@ -1,10 +1,10 @@
 import { useNavigate, Link } from 'react-router-dom';
-import type { GameMode } from '../types';
+import { GameMode } from '../types';
 
 const GAME_MODES: { id: GameMode; label: string; description: string }[] = [
-  { id: 'WORD', label: 'Word Mode', description: 'Read the word, press the direction.' },
-  { id: 'ARROW', label: 'Arrow Mode', description: 'Follow the arrow direction.' },
-  { id: 'HIGHLIGHT', label: 'Highlight Mode', description: 'Press the highlighted area.' },
+  { id: GameMode.WORD, label: 'Word Mode', description: 'Read the word, press the direction.' },
+  { id: GameMode.ARROW, label: 'Arrow Mode', description: 'Follow the arrow direction.' },
+  { id: GameMode.HIGHLIGHT, label: 'Highlight Mode', description: 'Press the highlighted area.' },
 ];
 
 export const Home = () => {

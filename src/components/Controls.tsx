@@ -1,6 +1,6 @@
 import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
 import clsx from 'clsx';
-import type { Direction } from '../types';
+import { Direction, InputType } from '../types';
 import { useSettings } from '../context/SettingsContext';
 import { getDirectionLabel } from '../utils/gameUtils';
 
@@ -9,7 +9,7 @@ interface ControlsProps {
   disabled?: boolean;
   isWrong?: boolean; // To trigger the shake animation/red color
   isCorrect?: boolean; // To trigger the pop animation/green color
-  inputType?: 'ARROWS' | 'TEXT';
+  inputType?: InputType;
   buttonOrder?: Direction[]; // For TEXT mode
 }
 
@@ -18,8 +18,8 @@ export const Controls = ({
   disabled, 
   isWrong, 
   isCorrect,
-  inputType = 'ARROWS',
-  buttonOrder = ['UP', 'DOWN', 'LEFT', 'RIGHT']
+  inputType = InputType.ARROWS,
+  buttonOrder = [Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT]
 }: ControlsProps) => {
   const { useCardinalDirections } = useSettings();
 
@@ -35,10 +35,10 @@ export const Controls = ({
     baseButtonClass,
     extraClass,
     isWrong ? "bg-red-500 animate-shake" : isCorrect ? "bg-green-500 animate-pop" : "bg-blue-500 text-white",
-    inputType === 'TEXT' ? "aspect-[2/1] font-extrabold text-xl tracking-wider" : "aspect-square"
+    inputType === InputType.TEXT ? "aspect-[2/1] font-extrabold text-xl tracking-wider" : "aspect-square"
   );
 
-  if (inputType === 'TEXT') {
+  if (inputType === InputType.TEXT) {
     return (
       <div className="grid grid-cols-2 gap-4 max-w-[500px] mx-auto my-8 w-full">
         {buttonOrder.map((dir) => (
@@ -59,7 +59,7 @@ export const Controls = ({
     <div className="grid grid-cols-3 grid-rows-3 gap-4 max-w-[360px] w-full mx-auto my-8">
       <button
         className={getButtonClass("col-start-2 row-start-1")}
-        onClick={() => handleInteraction('UP')}
+        onClick={() => handleInteraction(Direction.UP)}
         disabled={disabled}
         aria-label="Up"
       >
@@ -68,7 +68,7 @@ export const Controls = ({
       
       <button
         className={getButtonClass("col-start-1 row-start-2")}
-        onClick={() => handleInteraction('LEFT')}
+        onClick={() => handleInteraction(Direction.LEFT)}
         disabled={disabled}
         aria-label="Left"
       >
@@ -77,7 +77,7 @@ export const Controls = ({
       
       <button
         className={getButtonClass("col-start-3 row-start-2")}
-        onClick={() => handleInteraction('RIGHT')}
+        onClick={() => handleInteraction(Direction.RIGHT)}
         disabled={disabled}
         aria-label="Right"
       >
@@ -86,7 +86,7 @@ export const Controls = ({
       
       <button
         className={getButtonClass("col-start-2 row-start-3")}
-        onClick={() => handleInteraction('DOWN')}
+        onClick={() => handleInteraction(Direction.DOWN)}
         disabled={disabled}
         aria-label="Down"
       >
