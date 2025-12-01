@@ -5,15 +5,30 @@ import { getRandomDirection } from '../utils/gameUtils';
 const BASE_POINTS = 10;
 const PENALTY_TIME = 1; // Seconds to stun the player
 
-export const useGameLogic = (_mode: GameMode, initialTime: number = 60) => {
+export const useGameLogic = (_mode: GameMode) => {
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(initialTime);
+  const [lastScore, setLastScore] = useState<number | null>(null);
+  const [timeLeft, setTimeLeft] = useState(0);
   const [targetDirection, setTargetDirection] = useState<Direction>('UP');
   const [gameState, setGameState] = useState<'IDLE' | 'PLAYING' | 'GAME_OVER'>('IDLE');
   const [isWrong, setIsWrong] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
   
   // Ref to track when the current question appeared for speed bonus
   const questionStartTime = useRef<number>(0);
+  const scoreRef = useRef(score);
+  const successTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    scoreRef.current = score;
+  }, [score]);
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
+    };
+  }, []);
 
   // Timer
   useEffect(() => {
@@ -22,7 +37,8 @@ export const useGameLogic = (_mode: GameMode, initialTime: number = 60) => {
       interval = setInterval(() => {
         setTimeLeft((prev) => {
             if (prev <= 1) {
-                setGameState('GAME_OVER');
+                setLastScore(scoreRef.current);
+                setGameState('IDLE');
                 return 0;
             }
             return prev - 1;
@@ -37,13 +53,20 @@ export const useGameLogic = (_mode: GameMode, initialTime: number = 60) => {
     questionStartTime.current = Date.now();
   }, []);
 
-  const startGame = useCallback(() => {
+  const startGame = useCallback((duration: number) => {
     setScore(0);
-    setTimeLeft(initialTime);
+    setTimeLeft(duration);
     setGameState('PLAYING');
     setIsWrong(false);
+    setIsCorrect(false);
     generateNewQuestion();
-  }, [generateNewQuestion, initialTime]);
+  }, [generateNewQuestion]);
+
+  const resetGame = useCallback(() => {
+    setGameState('IDLE');
+    setScore(0);
+    setTimeLeft(0);
+  }, []);
 
   const handleAnswer = useCallback((selectedDirection: Direction) => {
     if (gameState !== 'PLAYING' || isWrong) return;
@@ -58,6 +81,15 @@ export const useGameLogic = (_mode: GameMode, initialTime: number = 60) => {
       else if (timeTaken < 3.0) speedBonus = 1;
 
       setScore((prev) => prev + BASE_POINTS + speedBonus);
+      
+      // Trigger success animation
+      if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
+      setIsCorrect(true);
+      successTimeoutRef.current = setTimeout(() => {
+        setIsCorrect(false);
+        successTimeoutRef.current = null;
+      }, 150);
+      
       generateNewQuestion();
     } else {
       // Wrong
@@ -70,11 +102,14 @@ export const useGameLogic = (_mode: GameMode, initialTime: number = 60) => {
 
   return {
     score,
+    lastScore,
     timeLeft,
     targetDirection,
     gameState,
     isWrong,
+    isCorrect,
     startGame,
+    resetGame,
     handleAnswer
   };
 };

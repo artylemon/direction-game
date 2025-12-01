@@ -28,7 +28,7 @@ The goal is simple: Identify the correct direction as quickly as possible!
 *   **Language:** [TypeScript](https://www.typescriptlang.org/)
 *   **Routing:** [React Router DOM](https://reactrouter.com/)
 *   **Icons:** [Lucide React](https://lucide.dev/)
-*   **Styling:** CSS Modules & Utility Classes (Tailwind CSS pending integration)
+*   **Styling:** CSS Modules 
 
 ## 🚀 Getting Started
 
