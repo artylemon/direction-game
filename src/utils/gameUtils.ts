@@ -1,6 +1,7 @@
 import { Direction } from '../types';
+import { DIRECTIONS, DIRECTION_LABELS } from '../constants';
 
-export const DIRECTIONS: Direction[] = [Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT];
+export { DIRECTIONS };
 
 export const getRandomDirection = (): Direction => {
   const randomIndex = Math.floor(Math.random() * DIRECTIONS.length);
@@ -17,12 +18,5 @@ export const shuffleArray = <T>(array: T[]): T[] => {
 };
 
 export const getDirectionLabel = (direction: Direction, useCardinal: boolean): string => {
-  if (!useCardinal) return direction;
-  
-  switch (direction) {
-    case Direction.UP: return 'NORTH';
-    case Direction.DOWN: return 'SOUTH';
-    case Direction.LEFT: return 'WEST';
-    case Direction.RIGHT: return 'EAST';
-  }
+  return useCardinal ? DIRECTION_LABELS.cardinal[direction] : DIRECTION_LABELS.standard[direction];
 };

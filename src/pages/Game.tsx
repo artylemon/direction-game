@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import clsx from 'clsx';
+import { useLocation } from 'react-router-dom';
 import { Controls } from '../components/Controls';
 import { ScoreBoard } from '../components/ScoreBoard';
 import { GameVisuals } from '../components/GameVisuals';
+import { BackToMenuLink, Button } from '../components/common';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { shuffleArray, DIRECTIONS } from '../utils/gameUtils';
 import { GAME_CONFIG } from '../constants';
@@ -60,18 +60,15 @@ export const Game = () => {
                 <p className="text-gray-500 text-lg mb-4">Select Time</p>
                 <div className="flex justify-center gap-2 mb-8">
                     {GAME_CONFIG.TIME_OPTIONS.map(t => (
-                        <button
+                        <Button
                             key={t}
+                            variant="time-option"
+                            size="md"
+                            selected={selectedTime === t}
                             onClick={() => setSelectedTime(t)}
-                            className={clsx(
-                                "px-4 py-2 rounded-lg text-lg font-bold transition-colors border-2",
-                                selectedTime === t 
-                                    ? "bg-blue-500 text-white border-blue-600" 
-                                    : "bg-white text-gray-600 border-gray-200 hover:border-blue-300"
-                            )}
                         >
                             {t}s
-                        </button>
+                        </Button>
                     ))}
                 </div>
                 
@@ -92,12 +89,14 @@ export const Game = () => {
                 
                 <p className="text-gray-500 text-lg mb-8">Ready to start?</p>
 
-                <button
+                <Button
+                    variant="success"
+                    size="xl"
                     onClick={handleStart}
-                    className="bg-green-500 text-white text-2xl font-bold px-12 py-6 rounded-2xl shadow-lg hover:bg-green-600 transform transition-all active:scale-95"
+                    className="rounded-2xl"
                 >
                     START
-                </button>
+                </Button>
             </div>
         </div>
       )}
@@ -130,12 +129,7 @@ export const Game = () => {
 
       {gameState === GameState.GAME_OVER && null}
 
-      <Link 
-        to="/"  
-        className="mt-auto mb-4 px-6 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-200 transition-colors font-medium text-sm"
-      >
-        Back to Menu
-      </Link>
+      <BackToMenuLink className="mt-auto mb-4" />
     </div>
   );
 };

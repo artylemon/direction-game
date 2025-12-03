@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { BackToMenuLink } from '../components/common';
 import { useSettings } from '../context/SettingsContext';
 
 export const Settings = () => {
@@ -23,7 +23,7 @@ export const Settings = () => {
         </div>
       </div>
 
-      <Link to="/" className="text-blue-500 hover:underline mt-4 block font-medium">Back to Menu</Link>
+      <BackToMenuLink className="mt-4" />
     </div>
   );
 };

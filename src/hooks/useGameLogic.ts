@@ -72,11 +72,13 @@ export const useGameLogic = (_mode: GameMode) => {
     if (selectedDirection === targetDirection) {
       // Correct
       const timeTaken = (Date.now() - questionStartTime.current) / 1000; // seconds
-      // Bonus: +5 if under 1s, +3 if under 2s, +1 if under 3s
+      
+      // Calculate speed bonus based on response time
+      const { SPEED_BONUS } = GAME_CONFIG;
       let speedBonus = 0;
-      if (timeTaken < 1.0) speedBonus = 5;
-      else if (timeTaken < 2.0) speedBonus = 3;
-      else if (timeTaken < 3.0) speedBonus = 1;
+      if (timeTaken < SPEED_BONUS.FAST.threshold) speedBonus = SPEED_BONUS.FAST.points;
+      else if (timeTaken < SPEED_BONUS.MEDIUM.threshold) speedBonus = SPEED_BONUS.MEDIUM.points;
+      else if (timeTaken < SPEED_BONUS.SLOW.threshold) speedBonus = SPEED_BONUS.SLOW.points;
 
       setScore((prev) => prev + GAME_CONFIG.BASE_POINTS + speedBonus);
       
